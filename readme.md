@@ -13,3 +13,11 @@ Necesito que ahora te conviertas en un experto en ingeniería de software y modi
 Perfect, we are working in ms-nosql-ecommerce, first, please add a .env and on the app.module.ts replace the import uri with the .env import, secondly, i creeated with nestjs cli the folder products, i need to integrade my mysql database, could you please do that on the schema for products ?
 
 using the entity that i created, please implement the controller and service, i need a get to get all products and another endpoint to "buy" a product, i let to you the logic 
+
+perfect, now i need a locuts file example 
+
+please integrate a deletion of some products and the update on other products on the locustfile, to test all the api please
+
+-- comando para usar esto --
+
+> locust -f locustfile.py --host=http://localhost:3000 --
