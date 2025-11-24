@@ -1,5 +1,7 @@
 Promps:
 
+-- Usando copilot y gemini -- 
+
 Hola gemini! Necesito que me proveas un Docker composer para poder usar mi backend en un trabajo, necesito levantar una base de datos mongodb y otra mysql, porfavor, debe persistir la data de ambas Bd's
 
 -- comando para usar esto --
