@@ -23,3 +23,7 @@ please integrate a deletion of some products and the update on other products on
 -- comando para usar esto --
 
 > locust -f locustfile.py --host=http://localhost:3000 --
+
+now in top level of the folders i mean /locust i wanna create a nextjs frontend, basic, must have 2 pages, one to use the get products and buy them, and another page to the administrator i mean, modify products, delete and post more of them. use boostrap please, and isolate the url for the api 
+
+finally i need you to please isolate a mysql and a nosql front end, just let a page to select where to use the backend either the mysql one or the nosql one, let the nosql one that we have been working together, the mysql let empty for now with a message that says "tu turno tiano". And finnally translate all the frontend into spanish please
