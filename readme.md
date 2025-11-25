@@ -344,6 +344,73 @@ working together, the mysql let empty for now with a message that says "tu turno
 And finnally translate all the frontend into spanish please
 ```
 
+### Iteración 7: PROMPT MAESTRO - TypeORM + MySQL CRUD
+```
+Quiero que generes un CRUD completo para productos en NestJS usando TypeORM con MySQL. 
+Debes crear todos los archivos necesarios dentro de src/products/ con el siguiente comportamiento:
+
+Objetivo: replicar EXACTAMENTE el CRUD que hoy existe en mi microservicio NoSQL basado en MongoDB.
+Mismos endpoints, mismos DTOs, mismo response JSON, misma lógica de comprar producto (/products/:id/buy).
+
+Base de datos MySQL (ORM TypeORM):
+
+Tabla producto con: id_producto (PK), nombre, descripcion, precio, stock, activo, id_categoria (FK)
+Tabla categoria con: id_categoria (PK), nombre
+
+Tareas que debes generar:
+
+Entity Product (product.entity.ts)
+- Mapear tabla producto
+- FK a categoria
+
+Entity Category (category.entity.ts)
+- Mapear tabla categoria
+
+DTOs compatibles con el backend MongoDB:
+
+create-product.dto.ts
+update-product.dto.ts
+buy-product.dto.ts
+
+Deben soportar este JSON:
+{
+  "name": "Laptop",
+  "description": "High performance",
+  "price": 1000,
+  "stock": 5,
+  "active": true,
+  "category": { "name": "Electronics" }
+}
+
+ProductsService (products.service.ts)
+CRUD completo:
+- findAll
+- findOne
+- create (crea categoría si no existe)
+- update
+- delete
+- buy (valida stock, resta stock)
+
+ProductsController (products.controller.ts)
+Rutas REST:
+- GET /products
+- GET /products/:id
+- POST /products
+- PATCH /products/:id
+- DELETE /products/:id
+- POST /products/:id/buy
+
+ProductsModule (products.module.ts)
+- Exporta TypeOrmModule con Product y Category.
+
+Importante:
+- Usa @nestjs/typeorm con repositorios
+- Usa validaciones con class-validator
+- Usa TypeORM con relaciones ManyToOne / OneToMany
+- El código debe estar ya listo para pegar y funcionar
+- Crea todos los archivos dentro de src/products/ con el contenido completo.
+```
+
 ---
 
 ## 🛠️ Desarrollo y Troubleshooting
