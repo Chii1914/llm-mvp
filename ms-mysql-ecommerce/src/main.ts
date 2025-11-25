@@ -7,8 +7,7 @@ async function bootstrap() {
   
   // Enable CORS
   app.enableCors({
-    origin: ['http://localhost:3001', 'http://localhost:3000', 'http://127.0.0.1:3001'],
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    origin: process.env.CORS_ORIGIN || 'http://localhost:3001',
     credentials: true,
   });
   
@@ -21,7 +20,7 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(process.env.PORT ?? 3000);
-  console.log(`Application is running on: http://localhost:${process.env.PORT ?? 3000}`);
+  await app.listen(process.env.PORT ?? 3002);
+  console.log(`Application is running on: http://localhost:${process.env.PORT ?? 3002}`);
 }
 bootstrap();
