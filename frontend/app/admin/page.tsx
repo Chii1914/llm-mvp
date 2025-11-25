@@ -49,7 +49,7 @@ export default function AdminPage() {
     try {
       setLoading(true);
       setError('');
-      const data = await productService.getAll();
+      const data = await productService.getAll(selectedDB);
       setProducts(data);
     } catch (err: any) {
       setError(err.message || es.common.failedLoad);
@@ -125,10 +125,10 @@ export default function AdminPage() {
       }
 
       if (editingId) {
-        await productService.update(editingId, formData);
+        await productService.update(editingId, formData, selectedDB);
         setSuccess(es.admin.messages.updateSuccess);
       } else {
-        await productService.create(formData);
+        await productService.create(formData, selectedDB);
         setSuccess(es.admin.messages.createSuccess);
       }
 
@@ -146,7 +146,7 @@ export default function AdminPage() {
 
     try {
       setError('');
-      await productService.delete(id);
+      await productService.delete(id, selectedDB);
       setSuccess(es.admin.messages.deleteSuccess);
       setTimeout(() => setSuccess(''), 3000);
       fetchProducts();

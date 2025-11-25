@@ -28,7 +28,7 @@ export default function ShopPage() {
     try {
       setLoading(true);
       setError('');
-      const data = await productService.getAll();
+      const data = await productService.getAll(selectedDB);
       setProducts(data.filter((p) => p.active || p.activo));
       setQuantities({});
     } catch (err: any) {
@@ -52,7 +52,7 @@ export default function ShopPage() {
 
     try {
       setError('');
-      await productService.buy(productId, quantity);
+      await productService.buy(productId, quantity, selectedDB);
       setSuccess(es.shop.purchaseSuccess.replace('{quantity}', quantity.toString()));
       setTimeout(() => setSuccess(''), 3000);
       fetchProducts();

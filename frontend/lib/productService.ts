@@ -1,12 +1,24 @@
 import axios from 'axios';
-import { apiConfig } from './apiConfig';
+import { apiConfig, getApiUrl } from './apiConfig';
 
+// Create axios instance with default base URL
 export const apiClient = axios.create({
   baseURL: apiConfig.baseURL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
+
+// Function to create a client with dynamic base URL
+export const createApiClient = (selectedDB: 'nosql' | 'mysql' | null) => {
+  const baseURL = getApiUrl(selectedDB);
+  return axios.create({
+    baseURL,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
 
 export interface Product {
   _id?: string;
@@ -57,19 +69,22 @@ const normalizeProduct = (product: any): Product => {
 
 export const productService = {
   // Get all products
-  getAll: async (): Promise<Product[]> => {
-    const response = await apiClient.get(apiConfig.endpoints.products.list);
+  getAll: async (selectedDB?: 'nosql' | 'mysql' | null): Promise<Product[]> => {
+    const client = createApiClient(selectedDB || null);
+    const response = await client.get(apiConfig.endpoints.products.list);
     return response.data.map(normalizeProduct);
   },
 
   // Get a single product
-  getById: async (id: string): Promise<Product> => {
-    const response = await apiClient.get(apiConfig.endpoints.products.get(id));
+  getById: async (id: string, selectedDB?: 'nosql' | 'mysql' | null): Promise<Product> => {
+    const client = createApiClient(selectedDB || null);
+    const response = await client.get(apiConfig.endpoints.products.get(id));
     return normalizeProduct(response.data);
   },
 
   // Create a new product
-  create: async (product: Omit<Product, '_id' | 'id_producto'>): Promise<Product> => {
+  create: async (product: Omit<Product, '_id' | 'id_producto'>, selectedDB?: 'nosql' | 'mysql' | null): Promise<Product> => {
+    const client = createApiClient(selectedDB || null);
     const payload = {
       name: product.name || product.nombre,
       description: product.description || product.descripcion,
@@ -78,12 +93,13 @@ export const productService = {
       active: product.active !== undefined ? product.active : true,
       category: product.category || (product.categoria ? { name: product.categoria.nombre } : undefined),
     };
-    const response = await apiClient.post(apiConfig.endpoints.products.create, payload);
+    const response = await client.post(apiConfig.endpoints.products.create, payload);
     return normalizeProduct(response.data);
   },
 
   // Update a product
-  update: async (id: string | number, product: Partial<Product>): Promise<Product> => {
+  update: async (id: string | number, product: Partial<Product>, selectedDB?: 'nosql' | 'mysql' | null): Promise<Product> => {
+    const client = createApiClient(selectedDB || null);
     const payload: any = {};
     if (product.name !== undefined && product.name !== '') payload.name = product.name;
     if (product.nombre !== undefined && product.nombre !== '') payload.name = product.nombre;
@@ -96,19 +112,21 @@ export const productService = {
     if (product.activo !== undefined) payload.active = product.activo;
     if (product.category) payload.category = product.category;
     
-    const response = await apiClient.patch(apiConfig.endpoints.products.update(String(id)), payload);
+    const response = await client.patch(apiConfig.endpoints.products.update(String(id)), payload);
     return normalizeProduct(response.data);
   },
 
   // Delete a product
-  delete: async (id: string): Promise<{ message: string }> => {
-    const response = await apiClient.delete(apiConfig.endpoints.products.delete(id));
+  delete: async (id: string, selectedDB?: 'nosql' | 'mysql' | null): Promise<{ message: string }> => {
+    const client = createApiClient(selectedDB || null);
+    const response = await client.delete(apiConfig.endpoints.products.delete(id));
     return response.data;
   },
 
   // Buy a product
-  buy: async (id: string, quantity: number): Promise<Product> => {
-    const response = await apiClient.post(apiConfig.endpoints.products.buy(id), { quantity });
+  buy: async (id: string, quantity: number, selectedDB?: 'nosql' | 'mysql' | null): Promise<Product> => {
+    const client = createApiClient(selectedDB || null);
+    const response = await client.post(apiConfig.endpoints.products.buy(id), { quantity });
     return normalizeProduct(response.data);
   },
 };

@@ -1,8 +1,16 @@
 // API configuration - centralized for easy management
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+const DEFAULT_API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost/api';
+
+export const getApiUrl = (selectedDB: 'nosql' | 'mysql' | null): string => {
+  if (selectedDB === 'mysql') {
+    return 'http://localhost/api-sql';
+  }
+  // Default to NoSQL API
+  return 'http://localhost/api';
+};
 
 export const apiConfig = {
-  baseURL: API_URL,
+  baseURL: DEFAULT_API_URL,
   endpoints: {
     products: {
       list: '/products',
@@ -15,4 +23,4 @@ export const apiConfig = {
   },
 };
 
-export default API_URL;
+export default DEFAULT_API_URL;
