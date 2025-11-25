@@ -71,9 +71,9 @@ export const es = {
       select: 'Usar NoSQL',
     },
     mysql: {
-      title: 'MySQL',
-      description: '¡Tu turno Tiano!',
-      select: 'Usar MySQL',
+      title: 'SQL (MySQL)',
+      description: 'Base de datos SQL con MySQL',
+      select: 'Usar SQL',
       comingSoon: 'Próximamente',
     },
   },

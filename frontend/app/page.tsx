@@ -29,7 +29,7 @@ export default function ShopPage() {
       setLoading(true);
       setError('');
       const data = await productService.getAll();
-      setProducts(data.filter((p) => p.active));
+      setProducts(data.filter((p) => p.active || p.activo));
       setQuantities({});
     } catch (err: any) {
       setError(err.message || es.common.failedLoad);
@@ -82,54 +82,61 @@ export default function ShopPage() {
         <Alert variant="info">{es.shop.noProducts}</Alert>
       ) : (
         <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-          {products.map((product) => (
-            <Col key={product._id}>
-              <Card className="h-100 shadow-sm">
-                <Card.Body>
-                  <Card.Title>{product.name}</Card.Title>
-                  <Card.Text className="text-muted">{product.description}</Card.Text>
-                  <Card.Text>
-                    <strong>{es.shop.category}:</strong> {product.category.name}
-                  </Card.Text>
-                  <Card.Text>
-                    <strong>{es.shop.price}:</strong> <span className="text-success">${product.price}</span>
-                  </Card.Text>
-                  <Card.Text>
-                    <strong>{es.shop.stock}:</strong> {product.stock > 0 ? product.stock : 'Agotado'}
-                  </Card.Text>
+          {products.map((product) => {
+            const productId = product._id || product.id_producto?.toString();
+            const productName = product.name || product.nombre;
+            const productDesc = product.description || product.descripcion;
+            const productPrice = product.price || product.precio;
+            const categoryName = product.category?.name || product.categoria?.nombre;
+            return (
+              <Col key={productId}>
+                <Card className="h-100 shadow-sm">
+                  <Card.Body>
+                    <Card.Title>{productName}</Card.Title>
+                    <Card.Text className="text-muted">{productDesc}</Card.Text>
+                    <Card.Text>
+                      <strong>{es.shop.category}:</strong> {categoryName}
+                    </Card.Text>
+                    <Card.Text>
+                      <strong>{es.shop.price}:</strong> <span className="text-success">${productPrice}</span>
+                    </Card.Text>
+                    <Card.Text>
+                      <strong>{es.shop.stock}:</strong> {product.stock > 0 ? product.stock : 'Agotado'}
+                    </Card.Text>
 
-                  {product.stock > 0 && (
-                    <>
-                      <Form.Group className="mb-3">
-                        <Form.Label className="small">{es.shop.quantity}</Form.Label>
-                        <Form.Control
-                          type="number"
-                          min="1"
-                          max={product.stock}
-                          value={quantities[product._id!] || 1}
-                          onChange={(e) =>
-                            handleQuantityChange(product._id, parseInt(e.target.value))
-                          }
-                        />
-                      </Form.Group>
-                      <Button
-                        variant="success"
-                        className="w-100"
-                        onClick={() => handleBuyProduct(product._id)}
-                      >
-                        {es.shop.buyNow}
+                    {product.stock > 0 && (
+                      <>
+                        <Form.Group className="mb-3">
+                          <Form.Label className="small">{es.shop.quantity}</Form.Label>
+                          <Form.Control
+                            type="number"
+                            min="1"
+                            max={product.stock}
+                            value={quantities[productId!] || 1}
+                            onChange={(e) =>
+                              handleQuantityChange(productId, parseInt(e.target.value))
+                            }
+                          />
+                        </Form.Group>
+                        <Button
+                          variant="success"
+                          className="w-100"
+                          onClick={() => handleBuyProduct(productId)}
+                        >
+                          {es.shop.buyNow}
+                        </Button>
+                      </>
+                    )}
+                    {product.stock === 0 && (
+                      <Button variant="secondary" className="w-100" disabled>
+                        {es.shop.outOfStock}
                       </Button>
-                    </>
-                  )}
-                  {product.stock === 0 && (
-                    <Button variant="secondary" className="w-100" disabled>
-                      {es.shop.outOfStock}
-                    </Button>
-                  )}
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
+                    )}
+                  </Card.Body>
+                </Card>
+              </Col>
+            );
+          })}
         </Row>
       )}
     </Container>
