@@ -128,7 +128,7 @@ docker compose up -d
 **Terminal 4 — Locust (opcional):**
 ```bash
 cd ms-nosql-ecommerce
-locust -f locustfile.py --host=http://localhost:3000
+locust -f locustfile.py --host=http://localhost/api/
 # Locust UI en http://localhost:8089
 ```
 
