@@ -24,9 +24,11 @@ services:
     environment:
       # Configuración inicial de la base de datos
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: tu_db_mysql # Base de datos para tu aplicación
+      MYSQL_DATABASE: tienda_demo # Base de datos para tu aplicación
       MYSQL_USER: user
       MYSQL_PASSWORD: password
+      MYSQL_ROOT_HOST: '%'
+    command: --default-authentication-plugin=mysql_native_password
     volumes:
       - mysql_data:/var/lib/mysql # <--- Persistencia: Mapea el directorio de datos al volumen
     restart: always
