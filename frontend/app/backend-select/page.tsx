@@ -47,19 +47,17 @@ export default function BackendSelectionPage() {
 
         {/* MySQL Card */}
         <Col md={5}>
-          <Card className="h-100 shadow-lg border-secondary">
+          <Card className="h-100 shadow-lg border-success">
             <Card.Body className="text-center">
               <h3 className="mb-3">🗄️ {es.backendSelect.mysql.title}</h3>
-              <Alert variant="warning" className="mb-4">
-                {es.backendSelect.mysql.description}
-              </Alert>
+              <p className="text-muted mb-4">{es.backendSelect.mysql.description}</p>
               <Button
-                variant="secondary"
+                variant="success"
                 size="lg"
-                disabled
+                onClick={handleSelectMySQL}
                 className="w-100"
               >
-                {es.backendSelect.mysql.comingSoon}
+                {es.backendSelect.mysql.select}
               </Button>
             </Card.Body>
           </Card>

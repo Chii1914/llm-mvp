@@ -60,14 +60,22 @@ export default function AdminPage() {
 
   const handleShowModal = (product?: Product) => {
     if (product) {
-      setEditingId(product._id || null);
+      const productId = product._id || product.id_producto;
+      const productName = product.name || product.nombre || '';
+      const productDesc = product.description || product.descripcion || '';
+      const productPrice = product.price ?? product.precio ?? 0;
+      const productStock = product.stock ?? 0;
+      const productActive = product.active !== undefined ? product.active : (product.activo !== undefined ? product.activo : true);
+      const categoryName = product.category?.name || product.categoria?.nombre || '';
+      
+      setEditingId(productId?.toString() || null);
       setFormData({
-        name: product.name,
-        description: product.description || '',
-        price: product.price,
-        stock: product.stock,
-        active: product.active,
-        category: product.category,
+        name: productName,
+        description: productDesc,
+        price: productPrice,
+        stock: productStock,
+        active: productActive,
+        category: { name: categoryName },
       });
     } else {
       setEditingId(null);
@@ -185,13 +193,20 @@ export default function AdminPage() {
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
-                <tr key={product._id}>
-                  <td>{product.name}</td>
-                  <td>{product.category.name}</td>
-                  <td>${product.price}</td>
+              {products.map((product) => {
+                const productId = product._id || product.id_producto;
+                const productName = product.name || product.nombre;
+                const categoryName = product.category?.name || product.categoria?.nombre;
+                const productPrice = product.price || product.precio;
+                const productActive = product.active !== undefined ? product.active : product.activo;
+                
+                return (
+                <tr key={productId}>
+                  <td>{productName}</td>
+                  <td>{categoryName}</td>
+                  <td>${productPrice}</td>
                   <td>{product.stock}</td>
-                  <td>{product.active ? es.admin.table.yes : es.admin.table.no}</td>
+                  <td>{productActive ? es.admin.table.yes : es.admin.table.no}</td>
                   <td>
                     <Button
                       variant="info"
@@ -204,13 +219,14 @@ export default function AdminPage() {
                     <Button
                       variant="danger"
                       size="sm"
-                      onClick={() => handleDeleteProduct(product._id)}
+                      onClick={() => handleDeleteProduct(productId)}
                     >
                       {es.admin.table.delete}
                     </Button>
                   </td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </Table>
         </div>
